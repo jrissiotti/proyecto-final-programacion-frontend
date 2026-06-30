@@ -95,19 +95,6 @@ export const useEventosStore = defineStore('eventos', () => {
     }
   }
 
-  async function validarCronologia() {
-    loading.value = true
-    error.value = null
-    try {
-      return await apiService.validarCronologia()
-    } catch (err: any) {
-      error.value = err.response?.data?.error || 'Error en la validación'
-      throw err
-    } finally {
-      loading.value = false
-    }
-  }
-
   async function exportar(formato: 'json' | 'csv', personaId?: string) {
     try {
       const blob = await apiService.exportar(formato, personaId)
@@ -142,6 +129,6 @@ export const useEventosStore = defineStore('eventos', () => {
     eventos, historial, loading, error, filtroTipo,
     eventosFiltrados, totalEventos, eventosPorTipo,
     fetchEventos, crearEvento, actualizarEvento, eliminarEvento, fetchHistorial,
-    validarCronologia, exportar, exportarGEDCOM
+    exportar, exportarGEDCOM
   }
 })

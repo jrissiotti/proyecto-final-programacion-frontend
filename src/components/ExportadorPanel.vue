@@ -3,26 +3,17 @@ import { ref } from 'vue'
 import { useEventos } from '@/composables/useEventos'
 import { usePersonas } from '@/composables/usePersonas'
 
-const { exportar, exportarGEDCOM, validarCronologia, loading } = useEventos()
+const { exportar, exportarGEDCOM, loading } = useEventos()
 const { personas } = usePersonas()
 
 const personaId = ref('')
-const validacionResult = ref<any>(null)
-const showValidacion = ref(false)
+
 
 async function handleExportar(formato: 'json' | 'csv') {
   await exportar(formato, personaId.value || undefined)
 }
 
-async function handleValidar() {
-  try {
-    validacionResult.value = await validarCronologia()
-    showValidacion.value = true
-  } catch {
-    validacionResult.value = { error: true }
-    showValidacion.value = true
-  }
-}
+
 </script>
 
 <template>
@@ -51,22 +42,6 @@ async function handleValidar() {
         <span>GEDCOM</span>
       </button>
     </div>
-
-    <div class="validacion-section">
-      <button class="validate-btn" @click="handleValidar" :disabled="loading">
-        {{ loading ? 'Validando...' : '🔍 Validar Cronología' }}
-      </button>
-      <div v-if="showValidacion && validacionResult" class="validacion-result"
-        :class="validacionResult.error ? 'error' : 'success'">
-        <template v-if="validacionResult.error">
-          <p>❌ Error en la validación</p>
-        </template>
-        <template v-else>
-          <p>✅ Validación completada</p>
-          <pre>{{ JSON.stringify(validacionResult, null, 2) }}</pre>
-        </template>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -91,14 +66,5 @@ async function handleValidar() {
 .export-btn.gedcom { background: rgba(139,92,246,0.1); border-color: rgba(139,92,246,0.3); }
 .export-btn.gedcom:hover { background: rgba(139,92,246,0.2); box-shadow: 0 0 16px rgba(139,92,246,0.2); }
 .btn-icon { font-size: 1.4rem; }
-.validate-btn { width: 100%; padding: 14px; background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.3);
-  border-radius: 12px; color: #22d3ee; cursor: pointer; font-family: 'Inter', sans-serif;
-  font-weight: 600; font-size: 0.95rem; transition: all 0.25s; }
-.validate-btn:hover { background: rgba(6,182,212,0.2); box-shadow: 0 0 16px rgba(6,182,212,0.2); }
-.validate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.validacion-result { margin-top: 16px; padding: 16px; border-radius: 12px; font-size: 0.85rem; }
-.validacion-result.success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #10b981; }
-.validacion-result.error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
-.validacion-result p { margin: 0 0 8px 0; font-weight: 600; }
-.validacion-result pre { margin: 0; font-size: 0.78rem; color: rgba(255,255,255,0.5); overflow-x: auto; white-space: pre-wrap; }
+
 </style>

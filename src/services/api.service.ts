@@ -95,10 +95,6 @@ class ApiService {
     return data
   }
 
-  async validarCronologia(): Promise<any> {
-    const { data } = await this.http.post<ApiResponse<any>>('/validar')
-    return data.data
-  }
 
   async getHistorial(): Promise<CambioDTO[]> {
     const { data } = await this.http.get<ApiResponse<CambioDTO[]>>('/historial')

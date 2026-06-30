@@ -21,7 +21,7 @@ export function useEventos() {
     actualizarEvento: (personaId: string, eventoId: string, payload: CrearEventoPayload) => store.actualizarEvento(personaId, eventoId, payload),
     eliminarEvento: (personaId: string, eventoId: string) => store.eliminarEvento(personaId, eventoId),
     cargarHistorial: () => store.fetchHistorial(),
-    validarCronologia: () => store.validarCronologia(),
+  
     exportar: (formato: 'json' | 'csv', personaId?: string) => store.exportar(formato, personaId),
     exportarGEDCOM: () => store.exportarGEDCOM(),
     setFiltroTipo: (tipo: TipoEvento | null) => { filtroTipo.value = tipo }
